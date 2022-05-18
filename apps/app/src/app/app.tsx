@@ -7,18 +7,18 @@ import { NewPost } from './components/NewPost';
 export function App() {
   return (
     <BrowserRouter>
-      <header>
-        <h1>Blogger</h1>
-        <nav>
-          <ul>
+      <header className='mb-4 p-2 bg-blue-100 flex items-center justify-between'>
+        <h1 className='p-2 text-4xl'>Blogger</h1>
+        <nav className='flex justify-end'>
+          <ul className='flex justify-between gap-8'>
             <li>
-              <Link to="/">Home</Link>
+              <Link className='text-blue-800' to="/">Home</Link>
             </li>
             <li>
-              <Link to="/newPost">Create Post</Link>
+              <Link className='text-blue-800' to="/newPost">Create Post</Link>
             </li>
             <li>
-              <Link to="/Login">Login</Link>
+              <Link className='text-blue-800' to="/Login">Login</Link>
             </li>
           </ul>
         </nav>
