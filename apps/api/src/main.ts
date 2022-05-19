@@ -5,6 +5,7 @@
 
 import * as express from 'express';
 import { AuthRoutes } from './app/routes/Auth';
+import { PostRoutes } from './app/routes/Posts';
 import { connectToDatabase } from './database';
 
 connectToDatabase()
@@ -14,6 +15,7 @@ connectToDatabase()
 const app = express();
 
 app.use(AuthRoutes);
+app.use('/post', PostRoutes);
 
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {

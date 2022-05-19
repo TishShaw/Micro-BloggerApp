@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { environment } from '../../environments/environment';
 import * as jwt from 'jsonwebtoken';
 import axios from 'axios';
@@ -59,6 +59,41 @@ router.get('/github/authorize', async (req: Request, res: Response)=> {
         response.cookie(cookieName, cookieValue, cookieSettings);
     };
 
+    export interface LoggedInUser {
+        id: string,
+        login: string,
+        avatar_url: string
+    }
 
+    export const validateAccessToken = async (req: Request & {user: LoggedInUser}, res: Response, next: NextFunction) => {
+        const accessToken = req.headers?.authorization?.split('Bearer')[1];
+
+        if(!accessToken) {
+            return res.status(400).json({
+                status: 'error',
+                message: ' No access token provided',
+            });
+        }
+
+        let decoded;
+        try {
+            decoded = jwt.verify(accessToken, environment.appSecret);
+        } catch (error) { 
+            console.log(error);
+        }
+
+        if(!decoded) {
+            return res.status(401).json({
+                status: 'error',
+                message: ' Could not verify access token'
+            });
+        }
+
+        const { id, login , avatar_url } = decoded;
+
+        req.user = { id, login, avatar_url };
+        next();
+
+    }
 
 export {router as AuthRoutes};
